@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nossamaternidade.dev/schemas/claude-player.schema.json",
+  "title": "Claude Code Player Card",
+  "description": "Ficha de jogador estilo RPG que descreve como uma pessoa usa o Claude Code no dia a dia. Cada afirmacao deve ser ancorada em evidencia real (repos, commits, config). Nada de segredos.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "player",
+    "class",
+    "stats",
+    "skills",
+    "arsenal",
+    "signature_projects",
+    "achievements",
+    "playstyle",
+    "claude_usage",
+    "honesty_notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Versao do schema (semver)."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date",
+      "description": "Data em que a ficha foi gerada (YYYY-MM-DD)."
+    },
+    "player": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["handle", "title", "tagline", "level", "xp_evidence"],
+      "properties": {
+        "handle": { "type": "string", "minLength": 2, "description": "Apelido publico / usuario de git ou GitHub." },
+        "display_name": { "type": ["string", "null"], "description": "Nome ou marca de exibicao. null se nao houver evidencia segura." },
+        "org": { "type": ["string", "null"], "description": "Organizacao/estudio associado." },
+        "title": { "type": "string", "minLength": 2, "description": "Titulo de RPG que resume o jogador." },
+        "tagline": { "type": "string", "minLength": 8, "description": "Frase de efeito brincalhona, orgulhosa e verdadeira." },
+        "level": { "type": "integer", "minimum": 1, "maximum": 99, "description": "Nivel agregado derivado de evidencia." },
+        "xp_evidence": { "type": "string", "description": "O que sustenta o nivel (numeros reais)." },
+        "location": { "type": ["string", "null"] }
+      }
+    },
+    "class": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "alignment"],
+      "properties": {
+        "primary": { "type": "string", "description": "Classe principal." },
+        "secondary": { "type": ["string", "null"], "description": "Subclasse / especializacao secundaria." },
+        "alignment": {
+          "type": "string",
+          "description": "Estilo de jogo em formato 'eixo1-eixo2'.",
+          "examples": ["Pragmatico-Veloz", "Caotico-Produtivo"]
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Atributos 0-100, cada um com evidencia.",
+      "required": [
+        "shipping",
+        "mobile_ios",
+        "backend_data",
+        "frontend_design",
+        "automation_tooling",
+        "debugging_qa",
+        "agent_orchestration",
+        "security_ops"
+      ],
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["score", "evidence"],
+          "properties": {
+            "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "evidence": { "type": "string", "minLength": 4 }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "tier", "evidence"],
+        "properties": {
+          "name": { "type": "string" },
+          "category": {
+            "type": ["string", "null"],
+            "enum": ["language", "framework", "platform", "tool", "practice", null]
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["touched", "working", "proficient", "expert", "signature"]
+          },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "arsenal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["languages", "frameworks", "tools", "mcps", "plugins"],
+      "properties": {
+        "languages": { "type": "array", "items": { "type": "string" } },
+        "frameworks": { "type": "array", "items": { "type": "string" } },
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "mcps": { "type": "array", "items": { "type": "string" }, "description": "Servidores MCP em uso." },
+        "plugins": { "type": "array", "items": { "type": "string" }, "description": "Plugins/skills do Claude Code." }
+      }
+    },
+    "signature_projects": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Projetos reais como 'quests'. Sem inventar.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "role", "status", "commits", "evidence"],
+        "properties": {
+          "name": { "type": "string" },
+          "repo": { "type": ["string", "null"], "description": "Caminho/slug do repo (sem segredos)." },
+          "role": { "type": "string", "description": "Papel do jogador no projeto." },
+          "stack": { "type": "array", "items": { "type": "string" } },
+          "status": {
+            "type": "string",
+            "enum": ["scaffold", "wip", "shipped-testflight", "near-launch", "live", "dormant", "client-work"]
+          },
+          "commits": { "type": ["integer", "null"], "minimum": 0 },
+          "highlight": { "type": ["string", "null"] },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "achievements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "proof"],
+        "properties": {
+          "title": { "type": "string" },
+          "date": { "type": ["string", "null"], "format": "date" },
+          "proof": { "type": "string" }
+        }
+      }
+    },
+    "playstyle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["traits", "motto"],
+      "properties": {
+        "traits": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "work_hours": { "type": ["string", "null"], "description": "Padrao de horario observado." },
+        "motto": { "type": "string" },
+        "pet_peeves": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "claude_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_fleet_commits",
+        "claude_co_authored_commits",
+        "favorite_workflows",
+        "custom_hooks",
+        "memory_count"
+      ],
+      "properties": {
+        "total_fleet_commits": { "type": "integer", "minimum": 0 },
+        "claude_co_authored_commits": { "type": "integer", "minimum": 0 },
+        "co_author_ratio": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "favorite_workflows": { "type": "array", "items": { "type": "string" } },
+        "custom_hooks": { "type": "array", "items": { "type": "string" } },
+        "agent_tools_installed": { "type": ["integer", "null"], "minimum": 0 },
+        "memory_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "honesty_notes": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Ressalvas honestas: o que NAO e do jogador, o que e estimativa, limites da evidencia."
+    }
+  }
+}

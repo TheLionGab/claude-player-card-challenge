@@ -1,0 +1,13 @@
+# desafios emitidos (privado — token por participante)
+anti-cheat/issued/
+anti-cheat/proof.sealed.json
+anti-cheat/_*.json
+
+# fichas geradas localmente (cada um gera a sua)
+players/*.json
+players/*.card.html
+
+# ruído
+.DS_Store
+*.log
+node_modules/
