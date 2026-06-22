@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-06-22",
+  "player": {
+    "handle": "exemplo-dev",
+    "display_name": "Joana Builder",
+    "org": "Estúdio Indie",
+    "title": "Tecelã de Apps Noturna",
+    "tagline": "Ficha de EXEMPLO — substitua rodando o PROMPT.md na sua máquina. Faz protótipo de madrugada e testa no device antes do café.",
+    "level": 31,
+    "xp_evidence": "Exemplo ilustrativo: ~620 commits em 9 repos, ~70% co-autorados pelo Claude; 2 apps no TestFlight.",
+    "location": null
+  },
+  "class": {
+    "primary": "Indie Mobile Crafter",
+    "secondary": "Designer-Engenheira full-stack",
+    "alignment": "Curiosa-Metódica"
+  },
+  "stats": {
+    "shipping": { "score": 78, "evidence": "620 commits em 9 repos; entrega contínua com commit+push ao concluir." },
+    "mobile_ios": { "score": 80, "evidence": "Expo/RN em 4 apps; 2 builds no TestFlight; QA em iPhone físico." },
+    "backend_data": { "score": 72, "evidence": "Supabase com RLS e edges; migrations versionadas." },
+    "frontend_design": { "score": 85, "evidence": "Design system próprio, tokens e animações com Reanimated." },
+    "automation_tooling": { "score": 70, "evidence": "Scripts de build e um hook de lint pré-commit." },
+    "debugging_qa": { "score": 74, "evidence": "Vitest na lógica pura; QA manual no device antes de cada release." },
+    "agent_orchestration": { "score": 60, "evidence": "Usa subagents do Claude Code para revisão e exploração de código." },
+    "security_ops": { "score": 68, "evidence": "Segredos em .env fora do git; revisão de dependências." }
+  },
+  "skills": [
+    { "name": "TypeScript / TSX", "category": "language", "tier": "expert", "evidence": "Linguagem principal nos 4 apps Expo." },
+    { "name": "React Native + Expo", "category": "framework", "tier": "proficient", "evidence": "Stack base de todos os projetos mobile." },
+    { "name": "Supabase", "category": "platform", "tier": "working", "evidence": "Auth, RLS e edge functions." },
+    { "name": "Claude Code", "category": "tool", "tier": "proficient", "evidence": "Subagents, plugins e memória entre sessões." }
+  ],
+  "arsenal": {
+    "languages": ["TypeScript", "JavaScript", "SQL", "Shell"],
+    "frameworks": ["React Native", "Expo", "Reanimated", "Vitest"],
+    "tools": ["Xcode", "EAS", "gh CLI", "Supabase CLI"],
+    "mcps": ["serena", "expo", "Supabase"],
+    "plugins": ["feature-dev", "expo", "pr-review-toolkit"]
+  },
+  "signature_projects": [
+    {
+      "name": "Diário de Plantas",
+      "repo": "(exemplo)",
+      "role": "Dona/dev — app de cuidado de plantas",
+      "stack": ["Expo", "TypeScript", "Supabase"],
+      "status": "shipped-testflight",
+      "commits": 240,
+      "highlight": "Lembretes inteligentes de rega; design system próprio.",
+      "evidence": "Exemplo: 240 commits, ~70% co-autorados pelo Claude."
+    },
+    {
+      "name": "Rotina Calma",
+      "repo": "(exemplo)",
+      "role": "Dona/dev — app de hábitos",
+      "stack": ["Expo", "TypeScript"],
+      "status": "wip",
+      "commits": 95,
+      "highlight": "Onboarding em 3 telas com animações suaves.",
+      "evidence": "Exemplo ilustrativo."
+    }
+  ],
+  "achievements": [
+    { "title": "Primeiro app no TestFlight", "date": "2026-05-10", "proof": "Pipeline de release de 1 comando." },
+    { "title": "Design system v1", "date": null, "proof": "Tokens de cor/tipo/spacing reutilizados em 4 apps." }
+  ],
+  "playstyle": {
+    "traits": [
+      "Protótipo rápido, refino depois",
+      "Testa no device de verdade antes de mergear",
+      "Documenta decisões em Markdown"
+    ],
+    "work_hours": "Coruja — picos de foco entre 22h e 1h.",
+    "motto": "Feito é melhor que perfeito — mas testado é melhor que feito.",
+    "pet_peeves": ["Build quebrado sem mensagem clara", "PR gigante sem descrição"]
+  },
+  "claude_usage": {
+    "total_fleet_commits": 620,
+    "claude_co_authored_commits": 434,
+    "co_author_ratio": 0.7,
+    "favorite_workflows": ["feature-dev", "code-review antes de mergear", "TDD na lógica pura"],
+    "custom_hooks": ["pre-commit lint"],
+    "agent_tools_installed": 3,
+    "memory_count": 12
+  },
+  "honesty_notes": "Esta é uma ficha de EXEMPLO, com dados fictícios, só para demonstrar o formato do card. Gere a sua rodando o PROMPT.md na sua própria máquina — os números reais virão da sua evidência (repos, git log, memórias)."
+}

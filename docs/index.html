@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>exemplo-dev — Player Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#16161e; --bg2:#1a1b26; --panel:#1f2335; --panel2:#24283b;
+    --ink:#c0caf5; --ink-dim:#a9b1d6; --muted:#565f89; --line:#2a2e44;
+    --gold:#e0af68; --blue:#7aa2f7; --purple:#bb9af7; --green:#9ece6a;
+    --cyan:#7dcfff; --orange:#ff9e64; --red:#f7768e; --teal:#73daca;
+    --display:'Space Grotesk',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{
+    margin:0;background:
+      radial-gradient(1200px 600px at 80% -10%, #1f2335 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, #1d1e30 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:var(--display);line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 64px}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  section{margin-top:34px}
+  h2.sec{font-size:.8rem;font-family:var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--gold);
+    margin:0 0 16px;display:flex;align-items:center;gap:12px}
+  h2.sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+  /* ---------- HERO ---------- */
+  .card{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+    background:linear-gradient(180deg,#1b1c2acc,#191a25cc);box-shadow:0 30px 80px -40px #000;}
+  .stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#c0caf5;opacity:.5;
+    animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.15}50%{opacity:.85}}
+  .hero{position:relative;display:grid;grid-template-columns:1.4fr .9fr;gap:24px;padding:30px 30px 26px}
+  .crest{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .monogram{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;
+    font-family:var(--mono);font-weight:700;font-size:1.25rem;color:#16161e;
+    background:linear-gradient(135deg,var(--gold),#ffce8a);box-shadow:0 0 28px #e0af6855}
+  .who .handle{font-size:1.05rem;font-weight:600;letter-spacing:.01em}
+  .who .org{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .title{font-size:2.5rem;font-weight:700;line-height:1.04;margin:4px 0 0;letter-spacing:-.02em;
+    background:linear-gradient(180deg,#fff,#9aa5d6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .clazz{font-family:var(--mono);font-size:.85rem;color:var(--blue);margin-top:10px}
+  .clazz .sep{color:var(--muted)}
+  .term{font-family:var(--mono);font-size:.84rem;color:var(--ink-dim);background:#13141c;border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;margin-top:16px;min-height:42px}
+  .term .prompt{color:var(--green)}
+  .cursor{display:inline-block;width:8px;height:1.05em;background:var(--gold);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .tagline{color:var(--ink-dim);font-size:.96rem;margin:16px 0 0;max-width:46ch}
+
+  .hero-right{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+  .gauge{width:190px;height:190px}
+  .gauge-track{fill:none;stroke:#2a2e44;stroke-width:14}
+  .gauge-arc{fill:none;stroke:url(#g);stroke-width:14;stroke-linecap:round;
+    stroke-dasharray:527.79;stroke-dashoffset:158.34;
+    transform:rotate(-90deg);transform-origin:50% 50%;filter:drop-shadow(0 0 10px #9ece6a66)}
+  .gauge-num{font-family:var(--display);font-weight:700;font-size:2.4rem;fill:#fff}
+  .gauge-lbl{font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;fill:var(--muted)}
+  .level{display:flex;align-items:baseline;gap:8px;font-family:var(--mono)}
+  .level b{font-size:2rem;color:var(--gold);font-family:var(--display)}
+  .level span{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- STATS ---------- */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+  .stat-head{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:.82rem}
+  .stat-name{color:var(--ink)}
+  .stat-val{font-weight:700}
+  .stat-track{height:8px;border-radius:6px;background:#13141c;border:1px solid var(--line);margin:7px 0;overflow:hidden}
+  .stat-fill{height:100%;border-radius:6px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .stat-ev{font-size:.78rem;color:var(--muted);line-height:1.45}
+
+  /* ---------- QUESTS ---------- */
+  .quests{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .quest{position:relative;border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;
+    background:linear-gradient(180deg,#1d1e2e,#191a24);overflow:hidden}
+  .quest-rank{position:absolute;top:8px;right:12px;font-family:var(--mono);font-weight:700;font-size:1.6rem;color:#23263a}
+  .quest-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .quest-head h3{margin:0;font-size:1.04rem;font-weight:600}
+  .quest-xp{font-family:var(--mono);font-size:.78rem;color:var(--ink-dim);margin:8px 0}
+  .quest-xp b{color:var(--gold)}
+  .quest-xp .dot{color:var(--muted);margin:0 6px}
+  .quest-hl{font-size:.85rem;color:var(--ink-dim);margin:6px 0 12px}
+
+  /* ---------- BADGES / CHIPS ---------- */
+  .badge{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+  .badge--nearlaunch{color:var(--gold);border-color:#e0af6855;background:#e0af6814}
+  .badge--shippedtestflight{color:var(--green);border-color:#9ece6a55;background:#9ece6a14}
+  .badge--wip{color:var(--blue);border-color:#7aa2f755;background:#7aa2f714}
+  .badge--clientwork{color:var(--purple);border-color:#bb9af755;background:#bb9af714}
+  .badge--live,.badge--dormant,.badge--scaffold{color:var(--cyan);border-color:#7dcfff55;background:#7dcfff14}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-family:var(--mono);font-size:.72rem;padding:4px 9px;border-radius:8px;border:1px solid var(--line);color:var(--ink-dim);background:#15161f}
+  .chip--ghost{background:transparent}
+  .chip--blue{color:var(--blue);border-color:#7aa2f733}
+  .chip--purple{color:var(--purple);border-color:#bb9af733}
+  .chip--green{color:var(--green);border-color:#9ece6a33}
+  .chip--cyan{color:var(--cyan);border-color:#7dcfff33}
+  .chip--gold{color:var(--gold);border-color:#e0af6833}
+  .chip--red{color:var(--red);border-color:#f7768e33}
+
+  /* ---------- ARSENAL / ACH / PLAYSTYLE ---------- */
+  .panel{border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:#191a24aa}
+  .ars-group{margin-bottom:14px}
+  .ars-group:last-child{margin-bottom:0}
+  .ars-group h4{margin:0 0 8px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ach-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  .ach{display:flex;gap:12px;align-items:flex-start}
+  .ach-medal{color:var(--gold);font-size:1.1rem;line-height:1.2;filter:drop-shadow(0 0 6px #e0af6877)}
+  .ach b{font-weight:600}
+  .ach-date{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-left:8px}
+  .ach p{margin:3px 0 0;font-size:.82rem;color:var(--muted)}
+  .motto{font-size:1.35rem;font-weight:600;line-height:1.3;margin:0 0 16px;letter-spacing:-.01em}
+  .motto .q{color:var(--gold)}
+  .traits{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .traits li{position:relative;padding-left:18px;font-size:.88rem;color:var(--ink-dim)}
+  .traits li::before{content:"▸";position:absolute;left:0;color:var(--gold)}
+  .kv{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-top:12px}
+  .kv b{color:var(--ink)}
+
+  /* ---------- METER STRIP ---------- */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;margin-top:18px}
+  .strip div{background:#191a24;padding:16px 14px;text-align:center}
+  .strip b{display:block;font-size:1.7rem;font-weight:700;font-family:var(--display)}
+  .strip span{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- FOOTER ---------- */
+  .honesty{font-size:.78rem;color:var(--muted);line-height:1.6;border-left:2px solid var(--gold);padding-left:14px}
+  .foot{margin-top:36px;font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  @media (max-width:720px){
+    .hero{grid-template-columns:1fr}.stats,.quests,.grid2,.strip{grid-template-columns:1fr}
+    .title{font-size:2rem}.strip{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HERO ===== -->
+  <div class="card">
+    <div class="stars"><i style="left:6%;top:18%;animation-delay:0s"></i><i style="left:14%;top:62%;animation-delay:0.6s"></i><i style="left:22%;top:30%;animation-delay:1.2s"></i><i style="left:31%;top:78%;animation-delay:1.7999999999999998s"></i><i style="left:40%;top:12%;animation-delay:2.4s"></i><i style="left:52%;top:48%;animation-delay:0s"></i><i style="left:60%;top:84%;animation-delay:0.6s"></i><i style="left:68%;top:24%;animation-delay:1.2s"></i><i style="left:77%;top:60%;animation-delay:1.7999999999999998s"></i><i style="left:85%;top:38%;animation-delay:2.4s"></i><i style="left:92%;top:72%;animation-delay:0s"></i><i style="left:12%;top:88%;animation-delay:0.6s"></i><i style="left:46%;top:90%;animation-delay:1.2s"></i><i style="left:70%;top:8%;animation-delay:1.7999999999999998s"></i><i style="left:88%;top:16%;animation-delay:2.4s"></i></div>
+    <div class="hero">
+      <div class="hero-left">
+        <div class="crest">
+          <div class="monogram">EX</div>
+          <div class="who">
+            <div class="handle">@exemplo-dev · Joana Builder</div>
+            <div class="org">Estúdio Indie</div>
+          </div>
+        </div>
+        <div class="eyebrow">Claude Code · Player Card</div>
+        <h1 class="title">Tecelã de Apps Noturna</h1>
+        <div class="clazz">Indie Mobile Crafter<br><span class="sep">↳</span> Designer-Engenheira full-stack <span class="sep">·</span> Curiosa-Metódica</div>
+        <div class="term" id="term"><span class="prompt">~/frota ❯</span> <span class="mono" style="color:var(--muted)">lema --print</span><br><span id="type" style="color:var(--gold)"></span><span class="cursor"></span></div>
+        <p class="tagline">Ficha de EXEMPLO — substitua rodando o PROMPT.md na sua máquina. Faz protótipo de madrugada e testa no device antes do café.</p>
+      </div>
+      <div class="hero-right">
+        <svg class="gauge" viewBox="0 0 200 200" role="img" aria-label="Co-autoria com o Claude: 70%">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#9ece6a"/><stop offset="1" stop-color="#e0af68"/></linearGradient></defs>
+          <circle class="gauge-track" cx="100" cy="100" r="84"/>
+          <circle class="gauge-arc" cx="100" cy="100" r="84"/>
+          <text class="gauge-num" x="100" y="98" text-anchor="middle" dominant-baseline="middle">70%</text>
+          <text class="gauge-lbl" x="100" y="122" text-anchor="middle">CO-AUTORIA CLAUDE</text>
+        </svg>
+        <div class="level"><b>LVL 31</b><span>nível</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STRIP ===== -->
+  <div class="strip">
+    <div><b style="color:var(--gold)">620</b><span>commits na frota</span></div>
+    <div><b style="color:var(--green)">434</b><span>co-autorados</span></div>
+    <div><b style="color:var(--blue)">3</b><span>coding-agents</span></div>
+    <div><b style="color:var(--purple)">12</b><span>memórias</span></div>
+  </div>
+
+  <!-- ===== STATS ===== -->
+  <section>
+    <h2 class="sec">Atributos</h2>
+    <div class="stats"><div class="stat">
+      <div class="stat-head"><span class="stat-name">Entrega</span><span class="stat-val" style="color:#e0af68">78</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:78%;background:#e0af68;box-shadow:0 0 14px #e0af6866"></div></div>
+      <div class="stat-ev">620 commits em 9 repos; entrega contínua com commit+push ao concluir.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Mobile / iOS</span><span class="stat-val" style="color:#7aa2f7">80</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:80%;background:#7aa2f7;box-shadow:0 0 14px #7aa2f766"></div></div>
+      <div class="stat-ev">Expo/RN em 4 apps; 2 builds no TestFlight; QA em iPhone físico.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Backend / Dados</span><span class="stat-val" style="color:#7dcfff">72</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:72%;background:#7dcfff;box-shadow:0 0 14px #7dcfff66"></div></div>
+      <div class="stat-ev">Supabase com RLS e edges; migrations versionadas.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Frontend / Design</span><span class="stat-val" style="color:#bb9af7">85</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:85%;background:#bb9af7;box-shadow:0 0 14px #bb9af766"></div></div>
+      <div class="stat-ev">Design system próprio, tokens e animações com Reanimated.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Automação</span><span class="stat-val" style="color:#9ece6a">70</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:70%;background:#9ece6a;box-shadow:0 0 14px #9ece6a66"></div></div>
+      <div class="stat-ev">Scripts de build e um hook de lint pré-commit.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Debug / QA</span><span class="stat-val" style="color:#73daca">74</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:74%;background:#73daca;box-shadow:0 0 14px #73daca66"></div></div>
+      <div class="stat-ev">Vitest na lógica pura; QA manual no device antes de cada release.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Orquestração</span><span class="stat-val" style="color:#ff9e64">60</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:60%;background:#ff9e64;box-shadow:0 0 14px #ff9e6466"></div></div>
+      <div class="stat-ev">Usa subagents do Claude Code para revisão e exploração de código.</div>
+    </div>
+<div class="stat">
+      <div class="stat-head"><span class="stat-name">Segurança</span><span class="stat-val" style="color:#f7768e">68</span></div>
+      <div class="stat-track"><div class="stat-fill" style="width:68%;background:#f7768e;box-shadow:0 0 14px #f7768e66"></div></div>
+      <div class="stat-ev">Segredos em .env fora do git; revisão de dependências.</div>
+    </div></div>
+  </section>
+
+  <!-- ===== FROTA / QUESTS ===== -->
+  <section>
+    <h2 class="sec">Frota · quests ativas</h2>
+    <div class="quests"><article class="quest">
+      <div class="quest-rank">01</div>
+      <header class="quest-head">
+        <h3>Diário de Plantas</h3>
+        <span class="badge badge--shippedtestflight">TestFlight</span>
+      </header>
+      <div class="quest-xp"><b>240</b> commits <span class="dot">·</span> Dona/dev — app de cuidado de plantas</div>
+      <p class="quest-hl">Lembretes inteligentes de rega; design system próprio.</p>
+      <div class="chips"><span class="chip chip--ghost">Expo</span><span class="chip chip--ghost">TypeScript</span><span class="chip chip--ghost">Supabase</span></div>
+    </article>
+<article class="quest">
+      <div class="quest-rank">02</div>
+      <header class="quest-head">
+        <h3>Rotina Calma</h3>
+        <span class="badge badge--wip">em obras</span>
+      </header>
+      <div class="quest-xp"><b>95</b> commits <span class="dot">·</span> Dona/dev — app de hábitos</div>
+      <p class="quest-hl">Onboarding em 3 telas com animações suaves.</p>
+      <div class="chips"><span class="chip chip--ghost">Expo</span><span class="chip chip--ghost">TypeScript</span></div>
+    </article></div>
+  </section>
+
+  <!-- ===== ARSENAL ===== -->
+  <section>
+    <h2 class="sec">Arsenal</h2>
+    <div class="panel">
+      <div class="ars-group"><h4>Linguagens</h4><div class="chips"><span class="chip chip--gold">TypeScript</span><span class="chip chip--gold">JavaScript</span><span class="chip chip--gold">SQL</span><span class="chip chip--gold">Shell</span></div></div>
+      <div class="ars-group"><h4>Frameworks</h4><div class="chips"><span class="chip chip--blue">React Native</span><span class="chip chip--blue">Expo</span><span class="chip chip--blue">Reanimated</span><span class="chip chip--blue">Vitest</span></div></div>
+      <div class="ars-group"><h4>Ferramentas</h4><div class="chips"><span class="chip chip--cyan">Xcode</span><span class="chip chip--cyan">EAS</span><span class="chip chip--cyan">gh CLI</span><span class="chip chip--cyan">Supabase CLI</span></div></div>
+      <div class="ars-group"><h4>MCPs</h4><div class="chips"><span class="chip chip--purple">serena</span><span class="chip chip--purple">expo</span><span class="chip chip--purple">Supabase</span></div></div>
+      <div class="ars-group"><h4>Plugins</h4><div class="chips"><span class="chip chip--green">feature-dev</span><span class="chip chip--green">expo</span><span class="chip chip--green">pr-review-toolkit</span></div></div>
+    </div>
+  </section>
+
+  <!-- ===== CONQUISTAS + PLAYSTYLE ===== -->
+  <section>
+    <div class="grid2">
+      <div>
+        <h2 class="sec">Conquistas</h2>
+        <ul class="ach-list"><li class="ach">
+      <span class="ach-medal">★</span>
+      <div><b>Primeiro app no TestFlight</b><span class="ach-date">2026-05-10</span><p>Pipeline de release de 1 comando.</p></div>
+    </li>
+<li class="ach">
+      <span class="ach-medal">★</span>
+      <div><b>Design system v1</b><p>Tokens de cor/tipo/spacing reutilizados em 4 apps.</p></div>
+    </li></ul>
+      </div>
+      <div>
+        <h2 class="sec">Estilo de jogo</h2>
+        <p class="motto"><span class="q">“</span>Feito é melhor que perfeito — mas testado é melhor que feito.<span class="q">”</span></p>
+        <ul class="traits"><li>Protótipo rápido, refino depois</li>
+<li>Testa no device de verdade antes de mergear</li>
+<li>Documenta decisões em Markdown</li></ul>
+        <p class="kv">⏱ <b>Horário:</b> Coruja — picos de foco entre 22h e 1h.</p>
+        <p class="kv" style="margin-bottom:8px">⚠ Pet peeves:</p><div class="chips"><span class="chip chip--red">Build quebrado sem mensagem clara</span><span class="chip chip--red">PR gigante sem descrição</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORKFLOWS ===== -->
+  <section><h2 class="sec">Workflows favoritos com o Claude</h2><div class="chips"><span class="chip chip--green">feature-dev</span><span class="chip chip--green">code-review antes de mergear</span><span class="chip chip--green">TDD na lógica pura</span></div></section>
+
+  <!-- ===== HONESTY ===== -->
+  <section>
+    <h2 class="sec">Nota de honestidade</h2>
+    <p class="honesty">Esta é uma ficha de EXEMPLO, com dados fictícios, só para demonstrar o formato do card. Gere a sua rodando o PROMPT.md na sua própria máquina — os números reais virão da sua evidência (repos, git log, memórias).</p>
+  </section>
+
+  <div class="foot">
+    <span>gerado de evidência real · example.json · schema v1.0.0</span>
+    <span>2026-06-22</span>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var line = "Feito é melhor que perfeito — mas testado é melhor que feito.";
+    var el = document.getElementById('type');
+    if (!el) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = line; return; }
+    var i = 0;
+    (function tick(){ if (i <= line.length){ el.textContent = line.slice(0, i++); setTimeout(tick, 34); } })();
+  })();
+</script>
+</body>
+</html>

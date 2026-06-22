@@ -6,6 +6,8 @@ anti-cheat/_*.json
 # fichas geradas localmente (cada um gera a sua)
 players/*.json
 players/*.card.html
+# ...exceto a ficha de EXEMPLO (alimenta o demo do GitHub Pages)
+!players/example.json
 
 # ruído
 .DS_Store

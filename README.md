@@ -7,6 +7,8 @@ ferramentas) — valide contra um schema e renderize um **card HTML** que imprim
 E o melhor: um sistema **anti-cheat** pra rodar isso como um **desafio entre amigos** —
 dá pra saber se a pessoa gerou de verdade ou **burlou**.
 
+**▶ [Ver um card ao vivo](https://theliongab.github.io/claude-player-card-challenge/)** — demo com ficha fictícia, só pra mostrar o formato.
+
 > Este repositório é só o **framework**. Sua ficha (`players/me.json`) é gerada localmente
 > a partir da SUA máquina e **não** vem aqui — nada de dados de ninguém no repo.
 
